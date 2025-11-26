@@ -5,11 +5,13 @@ import { FraudCheck } from './pages/FraudCheck';
 import { Transactions } from './pages/Transactions';
 import { Admin } from './pages/Admin';
 import { Login } from './pages/Login';
-import { Integrations } from './pages/Integrations'; // New Import
+import { Integrations } from './pages/Integrations'; 
 import { User, UserRole, Transaction, Alert } from './types';
 import { MOCK_TRANSACTIONS, MOCK_ALERTS } from './services/mockData';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [activePage, setActivePage] = useState('dashboard');
   const [transactions, setTransactions] = useState<Transaction[]>(MOCK_TRANSACTIONS);
@@ -23,15 +25,9 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const handleLogin = (role: UserRole) => {
-    const newUser: User = {
-      id: '1',
-      name: role === UserRole.ADMIN ? 'System Administrator' : 'John Doe',
-      email: role === UserRole.ADMIN ? 'admin@bank.com' : 'user@bank.com',
-      role: role
-    };
-    setUser(newUser);
-    localStorage.setItem('fraudGuardUser', JSON.stringify(newUser));
+  const handleLogin = (user: User) => {
+    setUser(user);
+    localStorage.setItem('fraudGuardUser', JSON.stringify(user));
   };
 
   const handleLogout = () => {
@@ -40,11 +36,9 @@ const App: React.FC = () => {
     setActivePage('dashboard');
   };
 
-  // Function to simulate incoming transaction flow
   const handleAddTransaction = (txn: Transaction) => {
     setTransactions(prev => [txn, ...prev]);
     
-    // Auto-create alert if fraud
     if (txn.isFraud) {
       const newAlert: Alert = {
         id: `alert_${txn.id}`,
@@ -89,6 +83,16 @@ const App: React.FC = () => {
     >
       {renderContent()}
     </Layout>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <ThemeProvider>
+      <LanguageProvider>
+        <AppContent />
+      </LanguageProvider>
+    </ThemeProvider>
   );
 };
 

@@ -44,3 +44,7 @@ export const generateRandomTransaction = (idOffset: number = 0): Transaction => 
     status: isFraud ? 'BLOCKED' : 'APPROVED',
   };
 };
+
+export const generateApiSecret = () => {
+  return 'whsec_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};
