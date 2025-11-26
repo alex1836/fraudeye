@@ -1,0 +1,5 @@
+{
+  "name": "FraudEye",
+  "description": "A comprehensive AI-powered credit card fraud detection system featuring real-time risk analysis, transaction monitoring, and admin analytics.",
+  "requestFramePermissions": []
+}
